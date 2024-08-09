@@ -1,6 +1,6 @@
 export interface DisplayProps {
   testIdPrefix: string;
-  attestationAddress: string;
+  attestationAddress?: string;
   theme: "primary" | "secondary";
   title?: string;
   description?: string;
