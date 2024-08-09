@@ -15,6 +15,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@ethereum-attestation-service/eas-sdk": "^2.5.0",
     "@storybook/react": "^8.2.8"
   },
   "devDependencies": {
