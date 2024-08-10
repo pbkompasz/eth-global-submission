@@ -5,7 +5,7 @@ import { BadgeProps } from "./Badge.types";
 import { ethers } from "ethers";
 
 export default {
-  title: "ReactComponentLibrary/Rating",
+  title: "ReactComponentLibrary/Badges",
   component: AttestationDisplay,
 } as Meta<typeof AttestationDisplay>;
 
@@ -50,6 +50,19 @@ BadgeWithSchemaTest.args = {
   provider,
 };
 
+export const BadgeWithActionsTest = Template.bind({});
+BadgeWithActionsTest.args = {
+  attestationUid:
+    "0x23b1e2fc7560357e478597cb47bbc8ba00576a1b0a72ddc3200cdd3fd31f4558",
+  title: "Simple attestation",
+  description: "hey checkout my attestation",
+  theme: "primary",
+  testIdPrefix: "badge",
+  showActions: true,
+  provider,
+};
+
+
 export const BadgeWithEverythingTest = Template.bind({});
 BadgeWithEverythingTest.args = {
   attestationUid:
@@ -60,5 +73,6 @@ BadgeWithEverythingTest.args = {
   testIdPrefix: "badge",
   showTransaction: true,
   showSchema: true,
+  showActions: true,
   provider,
 };
