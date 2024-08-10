@@ -26,6 +26,8 @@
     display: flex;
     align-items: start;
     justify-content: space-between;
+    padding-right: 6px;
+    gap: 1rem;
 
     &__title {
       display: flex;
@@ -34,6 +36,7 @@
 
       & > h1 {
         margin: 0px;
+        text-wrap: nowrap;
       }
 
       .material-symbols-outlined {
@@ -71,7 +74,87 @@
 
       & > a {
         color: rgb(152, 174, 235);
+        max-width: 90%;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
+    }
+  }
+
+  &__schema {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    & > div {
+      display: flex;
+      flex-direction: row;
+      gap: 1rem;
+    }
+
+    &__header {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: start;
+      padding-right: 6px;
+
+      &__title {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 6px;
+
+        & > p {
+          font-weight: 600;
+          font-size: 24px;
+          margin: 0px;
+        }
+
+        &__uid {
+          color: rgb(152, 174, 235);
+          font-size: 14px;
+          max-width: 6rem;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+      }
+    }
+    & > div:not(:first-child) {
+      border: 1px grey solid;
+      display: grid;
+      grid-template-columns: 1fr 1fr 6fr;
+      gap: 0px;
+      border-radius: 6px;
+
+      & > div {
+        padding: 6px;
+      }
+    }
+
+    &__field__type {
+      background-color: rgb(152, 174, 235);
+      border-right: 1px solid grey;
+    }
+
+    &__field__name {
+      border-right: 1px solid grey;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 1rem;
+
+    & > button {
+      background-color: rgb(76, 99, 182);
+      color: white;
+      min-height: 1rem;
+      border: 0px solid white;
+      border-radius: 6px;
+      font-size: 14px;
+      padding: 10px;
     }
   }
 }
