@@ -1,0 +1,37 @@
+
+.form {
+  font-family: Nunito, sans-serif;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px grey solid;
+  margin: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__title {
+    margin: 0px;
+    text-wrap: nowrap;
+  }
+
+  &__fields {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin: 1rem 0;
+
+    &__input {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__bool {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      width: 100%;
+    }
+  }
+
+}
