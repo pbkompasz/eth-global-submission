@@ -9,17 +9,64 @@ import {
   SchemaRegistry,
   MerkleValue,
   PrivateData,
+  Attestation,
 } from "@ethereum-attestation-service/eas-sdk";
+import axios from "axios";
 import { ethers, AbstractProvider, Provider, Signer } from "ethers";
 
+export type EASChainConfig = {
+  chainId: number;
+  chainName: string;
+  version: string;
+  contractAddress: string;
+  schemaRegistryAddress: string;
+  etherscanURL: string;
+  /** Must contain a trailing dot (unless mainnet). */
+  subdomain: string;
+  contractStartBlock: number;
+  rpcProvider: string;
+};
+
+
+export const EAS_CHAIN_CONFIGS: EASChainConfig[] = [
+  {
+    chainId: 11155111,
+    chainName: "sepolia",
+    subdomain: "sepolia.",
+    version: "0.26",
+    contractAddress: "0xC2679fBD37d54388Ce493F1DB75320D236e1815e",
+    schemaRegistryAddress: "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0",
+    etherscanURL: "https://sepolia.etherscan.io",
+    contractStartBlock: 2958570,
+    rpcProvider: `https://sepolia.infura.io/v3/`,
+  },
+];
+
+function getChainId() {
+  return Number(11155111);
+}
+
+export const CHAINID = getChainId();
+
+export const activeChainConfig = EAS_CHAIN_CONFIGS.find(
+  (config) => config.chainId === CHAINID
+);
+
+
+export const baseURL = `https://${activeChainConfig!.subdomain}easscan.org`;
 export const EAS_CONTRACT_ADDRESS =
   "0xC2679fBD37d54388Ce493F1DB75320D236e1815e"; // Sepolia v0.26
 
 export let easProvider: EAS;
 export let easContractAddress: string;
 
+const provider = ethers.getDefaultProvider("sepolia");
+const eas = new EAS(EAS_CONTRACT_ADDRESS);
+// @ts-expect-error MUST be a signer to do write operations! but not for read/write
+easProvider = eas.connect(provider);
+
 export const createConnection = (
-  provider: Provider = ethers.getDefaultProvider("sepolia"),
+  provider: Provider,
   easContractAddress: string = EAS_CONTRACT_ADDRESS
 ) => {
   const eas = new EAS(easContractAddress);
@@ -31,7 +78,26 @@ export const createConnection = (
 };
 
 export const getAttestation = async (uid: string) => {
-  return await easProvider.getAttestation(uid);
+  const response = await axios.post<Attestation>(
+    `${baseURL}/graphql`,
+    {
+      query:
+        "query Query($where: AttestationWhereUniqueInput!) {\n  attestation(where: $where) {\n    id\n    attester\n    recipient\n    revocationTime\n    expirationTime\n    time\n    txid\n    data\n  }\n}",
+      variables: {
+        where: {
+          id: uid,
+        },
+      },
+    },
+    {
+      headers: {
+        "content-type": "application/json",
+      },
+    }
+  );
+  console.log(response.data)
+  // @ts-ignore
+  return response.data.data.attestation;
 };
 
 export const createAttestation = async (
