@@ -1,7 +1,7 @@
 import { StoryFn, Meta } from "@storybook/react";
-import AttestationDisplay from "./AttestationDisplay";
+import AttestationDisplay from "./AttestationBadge";
 import { JSX } from "react/jsx-runtime";
-import { DisplayProps } from "./AttestationDisplay.types";
+import { DisplayProps } from "./AttestationBadge.types";
 
 export default {
   title: "ReactComponentLibrary/Rating",

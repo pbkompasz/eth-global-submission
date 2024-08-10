@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./AttestationDisplay.css";
-import { DisplayProps } from "./AttestationDisplay.types";
+import { DisplayProps } from "./AttestationBadge.types";
 
 // display card
 const AttestationDisplay: React.FC<DisplayProps> = (props) => {

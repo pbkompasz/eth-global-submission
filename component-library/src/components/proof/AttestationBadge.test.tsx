@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import AttestationDisplay from "./AttestationDisplay";
+import AttestationDisplay from "./AttestationBadge";
 
 describe("SmartRating", () => {
   test("renders the Rating component", () => {
