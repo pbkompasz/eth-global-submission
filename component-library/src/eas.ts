@@ -340,7 +340,12 @@ export const getSchema = async (
   const schemaRegistry = new SchemaRegistry(schemaRegistryContractAddress);
 
   // @ts-expect-error Can be a provider when reading data
-  schemaRegistry.connect(provider);
+  schemaRegistry.connect(provider ?? easProvider);
 
   return await schemaRegistry.getSchema({ uid });
 };
+
+export const decodeData = (schema: string, data: string) => {
+  const schemaCoder = new SchemaEncoder(schema);
+  return schemaCoder.decodeData(data);
+}
