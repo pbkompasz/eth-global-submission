@@ -52,4 +52,26 @@
       }
     }
   }
+
+  &__transaction {
+    display: flex;
+    flex-direction: row;
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      width: 50%;
+
+      & > p {
+        font-weight: 600;
+        color: rgb(123, 135, 148);
+        font-size: 12px;
+      }
+
+      & > a {
+        color: rgb(152, 174, 235);
+      }
+    }
+  }
 }

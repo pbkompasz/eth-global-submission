@@ -3,7 +3,7 @@ import "./SimpleBadge.scss";
 import { BadgeProps } from "./Badge.types";
 import { createConnection, getAttestation } from "../../eas";
 import { Attestation } from "@ethereum-attestation-service/eas-sdk";
-import dateFormat from "dateformat"
+import dateFormat from "dateformat";
 
 // TODO
 // Doesn't exist
@@ -12,6 +12,7 @@ import dateFormat from "dateformat"
 // Good
 // If admin, have option to revoke
 // If admin, have option to view all attestation from address
+// Icons tooltip
 const formatTime = (timestamp: number) => {
   const date = new Date(timestamp);
   return dateFormat(date, "dddd, mmmm dS, yyyy, h:MM:ss TT");
@@ -21,7 +22,7 @@ const AttestationDisplay: React.FC<BadgeProps> = (props) => {
   const [attestation, setAttestation] = useState<Attestation>();
 
   const { attestationUid, clickable } = props;
-  console.log(props.clickable)
+  console.log(props.clickable);
 
   const openInNewTab = (url: string) => {
     if (clickable === false) return;
@@ -56,7 +57,9 @@ const AttestationDisplay: React.FC<BadgeProps> = (props) => {
             <span className="material-symbols-outlined">done_all</span>
           </div>
           <div className="badge__header__info">
-            <p className="badge__header__info__time">{formatTime(Number(attestation.time))}</p>
+            <p className="badge__header__info__time">
+              {formatTime(Number(attestation.time))}
+            </p>
             <span className="material-symbols-outlined">
               {Number(attestation.expirationTime) === 0
                 ? "hourglass_disabled"
@@ -68,9 +71,21 @@ const AttestationDisplay: React.FC<BadgeProps> = (props) => {
           </div>
         </div>
         <p className="badge__description">{props.description}</p>
-        <hr className="divider"/>
-
-        asd
+        {props.showTransaction === true && (
+          <>
+            <hr className="divider" />
+            <div className="badge__transaction">
+              <div>
+                <p>FROM:</p>
+                <a href="">0xasd</a>
+              </div>
+              <div>
+                <p>TO:</p>
+                <a href="">0xasd</a>
+              </div>
+            </div>
+          </>
+        )}
       </div>
     </>
   ) : (
