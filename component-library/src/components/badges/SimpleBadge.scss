@@ -1,0 +1,55 @@
+
+.clickable {
+  cursor: pointer;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
+.divider {
+  border-top: 1px solid #bbb;
+}
+
+.badge {
+  font-family: Nunito, sans-serif;
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px grey solid;
+  margin: 1rem;
+
+  &__header {
+    display: flex;
+    align-items: start;
+    justify-content: space-between;
+
+    &__title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      & > h1 {
+        margin: 0px;
+      }
+
+      .material-symbols-outlined {
+        color: green;
+      }
+
+    }
+
+    &__info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      &__time {
+        color: grey;
+      }
+    }
+  }
+}
