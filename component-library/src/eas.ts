@@ -9,10 +9,8 @@ import {
   SchemaRegistry,
   MerkleValue,
   PrivateData,
-  Attestation,
 } from "@ethereum-attestation-service/eas-sdk";
-import axios from "axios";
-import { ethers, AbstractProvider, Provider, Signer } from "ethers";
+import { ethers, Provider, Signer } from "ethers";
 
 export type EASChainConfig = {
   chainId: number;
@@ -77,27 +75,12 @@ export const createConnection = (
   easProvider = eas.connect(provider);
 };
 
-export const getAttestation = async (uid: string) => {
-  const response = await axios.post<Attestation>(
-    `${baseURL}/graphql`,
-    {
-      query:
-        "query Query($where: AttestationWhereUniqueInput!) {\n  attestation(where: $where) {\n    id\n    attester\n    recipient\n    revocationTime\n    expirationTime\n    time\n    txid\n    data\n  }\n}",
-      variables: {
-        where: {
-          id: uid,
-        },
-      },
-    },
-    {
-      headers: {
-        "content-type": "application/json",
-      },
-    }
-  );
-  console.log(response.data)
-  // @ts-ignore
-  return response.data.data.attestation;
+export const getAttestation = async (uid: string, provider: Provider) => {
+  const eas = new EAS(EAS_CONTRACT_ADDRESS);
+  // @ts-expect-error
+  eas.connect(provider);
+
+  return await eas.getAttestation(uid);
 };
 
 export const createAttestation = async (
