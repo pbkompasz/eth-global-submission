@@ -16,7 +16,9 @@
   "license": "ISC",
   "dependencies": {
     "@ethereum-attestation-service/eas-sdk": "^2.5.0",
-    "@storybook/react": "^8.2.8"
+    "@storybook/react": "^8.2.8",
+    "axios": "^1.7.3",
+    "dateformat": "^5.0.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -36,6 +38,7 @@
     "@storybook/react-vite": "^8.2.8",
     "@storybook/test": "^8.2.8",
     "@testing-library/react": "^16.0.0",
+    "@types/dateformat": "^5.0.2",
     "@types/jest": "^29.5.12",
     "@types/react": "^18.3.3",
     "babel-jest": "^29.7.0",
@@ -46,6 +49,7 @@
     "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
+    "sass": "^1.77.8",
     "storybook": "^8.2.8",
     "tslib": "^2.6.3",
     "typescript": "^5.5.4"
