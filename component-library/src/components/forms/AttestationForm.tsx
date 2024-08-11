@@ -1,4 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
+import React from "react"
 import { createAttestation, getSchema } from "../../eas";
 import { Field } from "../../types";
 import "./AttestationForm.scss";
@@ -39,7 +40,7 @@ const AttestationForm = (props: FormProps) => {
     const name = split[1];
     const textInputTypes = ["address", "string", "bytes", "int"];
     const checkboxTypes = ["bool"];
-    const label = <label htmlFor={String(index)}>{name}</label>;
+    const label = <label className="form__fields__label" htmlFor={String(index)}>{name}</label>;
     if (textInputTypes.find((type) => split[0].includes(type))) {
       return (
         <div className="form__fields__input">
@@ -133,7 +134,7 @@ const AttestationForm = (props: FormProps) => {
             .map((schemaString, index) => createInput(schemaString, index))}
         </div>
         <input
-          className="form__actions"
+          className="form__action"
           type="submit"
           value={props.buttonText ?? "Submit"}
         />

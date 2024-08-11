@@ -15,7 +15,7 @@ export interface FormProps {
   description?: string;
   buttonText?: string;
   groups?: Group[];
-  recipient: string;
-  expirationDate: number;
-  revocable: boolean;
+  recipient?: string;
+  expirationDate?: number;
+  revocable?: boolean;
 }

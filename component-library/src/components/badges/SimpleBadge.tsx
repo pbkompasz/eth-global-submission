@@ -34,6 +34,7 @@ const AttestationDisplay: React.FC<BadgeProps> = (props) => {
   const { attestationUid, clickable } = props;
 
   const openInNewTab = (url: string) => {
+    console.log(url);
     if (clickable === false) return;
     const newWindow = window.open(url, "_blank", "noopener,noreferrer");
     if (newWindow) newWindow.opener = null;
@@ -70,7 +71,7 @@ const AttestationDisplay: React.FC<BadgeProps> = (props) => {
           className={`badge__header  ${clickable === false ? "" : "clickable"}`}
           onClick={() =>
             openInNewTab(
-              `https://easscan.org/offchain/attestation/view/${attestationUid}`
+              `https://sepolia.easscan.org/attestation/view/${attestation.uid}`
             )
           }
         >
@@ -155,7 +156,9 @@ const AttestationDisplay: React.FC<BadgeProps> = (props) => {
                       {field.name}
                     </div>
                     <div className="badge__schema__field__value">
-                      {Number(field.value.value)}
+                      {typeof field.value.value === "bigint"
+                        ? Number(field.value.value)
+                        : String(field.value.value)}
                     </div>
                   </div>
                 ))}

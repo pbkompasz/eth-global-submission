@@ -19,10 +19,6 @@ const provider = new ethers.JsonRpcProvider(alchemyApiUrl, network);
 
 const signer = ethers.Wallet.createRandom().connect(provider);
 
-console.log("Address:", signer.address);
-console.log("Private Key:", signer.privateKey);
-
-
 export const FormSimpleTest = Template.bind({});
 FormSimpleTest.args = {
   schemaUid:

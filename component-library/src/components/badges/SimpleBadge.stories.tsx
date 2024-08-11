@@ -25,6 +25,7 @@ BadgeSimpleTest.args = {
   description: "hey checkout my attestation",
   theme: "primary",
   testIdPrefix: "badge",
+  provider,
 };
 
 export const BadgeWithTransactionTest = Template.bind({});
@@ -36,6 +37,7 @@ BadgeWithTransactionTest.args = {
   theme: "primary",
   testIdPrefix: "badge",
   showTransaction: true,
+  provider,
 };
 
 export const BadgeWithSchemaTest = Template.bind({});

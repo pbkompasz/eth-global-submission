@@ -12,6 +12,8 @@
   &__title {
     margin: 0px;
     text-wrap: nowrap;
+    font-size: 28px;
+    font-weight: 600;
   }
 
   &__fields {
@@ -21,9 +23,19 @@
     gap: 6px;
     margin: 1rem 0;
 
+    &__label {
+      font-size: 16px;
+      font-weight: 550;
+    }
+
     &__input {
       display: flex;
       flex-direction: column;
+
+      & > input[type="text"] {
+        border: 1px grey solid;
+        border-radius: 6px;
+      }
     }
 
     &__bool {
@@ -31,7 +43,21 @@
       flex-direction: row;
       align-items: baseline;
       width: 100%;
+      gap: 1rem;
     }
+  }
+
+  &__action {
+    border: 1px solid grey;
+    border-radius: 6px;
+    height: 3rem;
+    width: 100%;
+    max-width: 200px;
+    text-transform: uppercase;
+    background-color: rgb(76, 99, 182);
+    color: white;
+    font-family: Nunito, sans-serif;
+    font-size: 20px;
   }
 
 }

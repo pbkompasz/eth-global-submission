@@ -37,6 +37,8 @@
       & > h1 {
         margin: 0px;
         text-wrap: nowrap;
+        font-weight: 600;
+        font-size: 28px;
       }
 
       .material-symbols-outlined {
@@ -56,9 +58,14 @@
     }
   }
 
+  &__description {
+    margin-bottom: 1rem;
+  }
+
   &__transaction {
     display: flex;
     flex-direction: row;
+    margin: 1rem 0;
 
     & > div {
       display: flex;
@@ -85,6 +92,7 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+    margin: 1rem 0;
 
     & > div {
       display: flex;
@@ -123,8 +131,6 @@
     }
     & > div:not(:first-child) {
       border: 1px grey solid;
-      display: grid;
-      grid-template-columns: 1fr 1fr 6fr;
       gap: 0px;
       border-radius: 6px;
 
@@ -136,16 +142,25 @@
     &__field__type {
       background-color: rgb(152, 174, 235);
       border-right: 1px solid grey;
+      width: 20%;
     }
 
     &__field__name {
+      width: 40%;
       border-right: 1px solid grey;
+    }
+
+    &__field__value {
+      width: 40%;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
   &__actions {
     display: flex;
     gap: 1rem;
+    margin-top: 1rem;
 
     & > button {
       background-color: rgb(76, 99, 182);
