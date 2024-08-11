@@ -20,7 +20,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import CircularProgress from "@mui/material/CircularProgress";
-import Link from 'next/link'
+import Link from "next/link";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -50,8 +50,8 @@ export default function RootLayout({
       href: "/form",
     },
     {
-      name: "Frames",
-      href: "/frame",
+      name: "Analytics",
+      href: "/analytics",
     },
   ];
 
@@ -59,7 +59,13 @@ export default function RootLayout({
     <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
       <List>
         {items.map((item, index) => (
-          <ListItem key={index} disablePadding button component={Link} href={item.href}>
+          <ListItem
+            key={index}
+            disablePadding
+            button
+            component={Link}
+            href={item.href}
+          >
             <ListItemButton>
               <ListItemIcon>
                 {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
@@ -87,7 +93,9 @@ export default function RootLayout({
           </Button>
         </div>
         <AppRouterCacheProvider>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <div style={{ padding: "1rem" }}>
+            <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          </div>
         </AppRouterCacheProvider>
       </body>
       <Drawer open={open} onClose={toggleDrawer(false)}>

@@ -9,6 +9,7 @@ import {
   SchemaRegistry,
   MerkleValue,
   PrivateData,
+  Attestation,
 } from "@ethereum-attestation-service/eas-sdk";
 import { ethers, Provider, Signer } from "ethers";
 
@@ -79,6 +80,8 @@ export const getAttestation = async (uid: string, provider: Provider) => {
   const eas = new EAS(EAS_CONTRACT_ADDRESS);
   // @ts-expect-error
   eas.connect(provider);
+
+  console.log(uid)
 
   return await eas.getAttestation(uid);
 };
@@ -330,5 +333,7 @@ export const getSchema = async (
 
 export const decodeData = (schema: string, data: string) => {
   const schemaCoder = new SchemaEncoder(schema);
-  return schemaCoder.decodeData(data);
+  const decodedData = schemaCoder.decodeData(data);
+  console.log(decodedData)
+  return decodedData
 }

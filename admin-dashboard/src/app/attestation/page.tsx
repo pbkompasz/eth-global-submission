@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import { getSchema } from "component-library/src/eas";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import { getAttestation, getSchema } from "component-library/src/eas";
 import SimpleBadge from "component-library/src/components/badges";
 import { ethers } from "ethers";
 import Button from "@mui/material/Button";
@@ -25,10 +26,14 @@ const network = "sepolia";
 const provider = new ethers.JsonRpcProvider(alchemyApiUrl, network);
 
 const createData = (uid: string) => {
-  return { name, uid };
+  return { uid };
 };
 
-const rows = [createData("0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0")];
+const rows = [
+  createData(
+    "0x23b1e2fc7560357e478597cb47bbc8ba00576a1b0a72ddc3200cdd3fd31f4558"
+  ),
+];
 
 export interface SimpleDialogProps {
   open: boolean;
@@ -50,7 +55,7 @@ function BadgeDialog(props: SimpleDialogProps) {
   const copyToClipboard = () => {
     navigator.clipboard.writeText(`
        <SimpleBadge
-        attestationUid="0x23b1e2fc7560357e478597cb47bbc8ba00576a1b0a72ddc3200cdd3fd31f4558"
+        attestationUid="${uid}"
         title="Simple attestation"
         description="Sample description"
         theme="primary"
@@ -66,8 +71,20 @@ function BadgeDialog(props: SimpleDialogProps) {
   return (
     <Dialog onClose={handleClose} open={open}>
       <DialogTitle>
-        <Stack direction="row" justifyContent="space-between">
-          {uid}
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          style={{ maxWidth: "100%", overflow: "hidden" }}
+        >
+          <div
+            style={{
+              maxWidth: "80%",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
+            {uid}
+          </div>
           <Button onClick={() => copyToClipboard()}>
             <ContentCopyIcon />
           </Button>
@@ -94,7 +111,7 @@ function BadgeDialog(props: SimpleDialogProps) {
         />
       </FormGroup>
       <SimpleBadge
-        attestationUid="0x23b1e2fc7560357e478597cb47bbc8ba00576a1b0a72ddc3200cdd3fd31f4558"
+        attestationUid={uid}
         title="Simple attestation"
         description="Sample description"
         theme="primary"
@@ -109,8 +126,8 @@ function BadgeDialog(props: SimpleDialogProps) {
 }
 
 export default function Attestation() {
-  const [schemaUid, setSchemaUid] = React.useState(
-    "0x6dee028cb86e60e2884fe261bd0c4e701f7cdfaea0e42aec5628ec96d4b3e10f"
+  const [attestationUid, setAttestationUid] = React.useState(
+    "0x23b1e2fc7560357e478597cb47bbc8ba00576a1b0a72ddc3200cdd3fd31f4558"
   );
   const [loading, setLoading] = React.useState(false);
   const [status, setStatus] = React.useState("");
@@ -118,19 +135,47 @@ export default function Attestation() {
   const [includeProof, setIncludeProof] = React.useState(true);
   const [open, setOpen] = React.useState(false);
 
+  const buildFrame = (attestation: any) => {
+    const image = `Valid attestation (${Number(attestation.time)}) created by ${
+      attestation.attester
+    }`;
+    const type = "proof";
+    const button1 = "View attestation";
+
+    return {
+      type,
+      uid: attestation.uid,
+      itemsLength: 1,
+      items: [
+        {
+          pos: 1,
+          image,
+          button1,
+        },
+      ],
+    };
+  };
+
+  const deployFrame = async (frame: object) => {
+    const response = await fetch(
+      `api/frame?frame-data=${JSON.stringify(frame)}`
+    );
+    const resp = await response.json();
+    return resp;
+  };
+
   const createFrame = async () => {
     setLoading(true);
     setStatus("Fetching schema");
-    const schema = await getSchema(
-      schemaUid,
-      "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0",
+    const attesttaion = await getAttestation(
+      "0x23b1e2fc7560357e478597cb47bbc8ba00576a1b0a72ddc3200cdd3fd31f4558",
       provider
     );
-    console.log(schema);
+    console.log(attesttaion);
     setStatus("Creating frame");
-    // buildFrame(schema);
+    const frame = buildFrame(attesttaion);
     setStatus("Deploying frame");
-    // deployFrame();
+    await deployFrame(frame);
     setLoading(false);
     setStatus("");
     setDeployed(true);
@@ -142,6 +187,11 @@ export default function Attestation() {
 
   return (
     <div>
+      <h1
+        style={{ marginBottom: "1rem", fontWeight: "bold", fontSize: "26px" }}
+      >
+        Attestations
+      </h1>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -149,6 +199,7 @@ export default function Attestation() {
               <TableCell>Attestation UID</TableCell>
               <TableCell align="center">Frame</TableCell>
               <TableCell align="center">Badge</TableCell>
+              <TableCell align="center">Revoke</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -161,21 +212,25 @@ export default function Attestation() {
                   {row.uid}
                 </TableCell>
                 <TableCell align="center">
-                  <Stack direction="row">
-                    {loading && <CircularProgress />}
-                    {status}
-                  </Stack>
                   {deployed ? (
                     <Button
                       variant="outlined"
-                      href={`${process.env.FRAME_DEBUGGER_URL}/?url=http://localhost:3000/frames`}
+                      href={`${process.env.FRAME_DEBUGGER_URL}/?url=http://localhost:3000/frames?uid=${attestationUid}`}
                       target="_blank"
                     >
                       View frame
+                      <ArrowOutwardIcon />
                     </Button>
                   ) : (
                     <Button variant="outlined" onClick={() => createFrame()}>
-                      Generate frame
+                      {loading ? (
+                        <Stack direction="row" alignItems="baseline">
+                          <CircularProgress size="small" />
+                          {status}
+                        </Stack>
+                      ) : (
+                        "Generate Attestation Frame"
+                      )}
                     </Button>
                   )}
                 </TableCell>
@@ -189,6 +244,9 @@ export default function Attestation() {
                     View Badge
                   </Button>
                 </TableCell>
+                <TableCell align="center">
+                  <Button variant="contained">Revoke</Button>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -197,7 +255,7 @@ export default function Attestation() {
       <BadgeDialog
         open={open}
         onClose={handleClose}
-        uid="0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0"
+        uid="0x23b1e2fc7560357e478597cb47bbc8ba00576a1b0a72ddc3200cdd3fd31f4558"
       />
     </div>
   );
@@ -206,8 +264,6 @@ export default function Attestation() {
 // TODO
 // Generate attest frame 2hr
 // Generate proof frame 1hr
-// Create pages for attestations, schemas and frames 2hr
 // Cleanup items 30min
 // Small util/functionality 1hr
-// Grouping 30min
 // Revoke attestation 30min

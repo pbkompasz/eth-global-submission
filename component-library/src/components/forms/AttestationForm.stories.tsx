@@ -28,6 +28,23 @@ FormSimpleTest.args = {
   theme: "primary",
   testIdPrefix: "badge",
   provider,
-  signer 
+  signer,
 };
 
+export const FormWithGroupingTest = Template.bind({});
+FormWithGroupingTest.args = {
+  schemaUid:
+    "0x6dee028cb86e60e2884fe261bd0c4e701f7cdfaea0e42aec5628ec96d4b3e10f",
+  title: "Simple attestation",
+  description: "hey checkout my attestation",
+  theme: "primary",
+  testIdPrefix: "badge",
+  groups: [
+    {
+      className: "group1",
+      fields: ["Scammer_Address", "Scammer_LinkedIn", "Scammer_WorldID", "Scammer_CompanyName"],
+    },
+  ],
+  provider,
+  signer,
+};

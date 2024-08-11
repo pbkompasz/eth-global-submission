@@ -14,19 +14,21 @@ datasource db {
 }
 
 model Item {
-  id    Int     @id
+  id       Int     @id @default(autoincrement())
+  pos     Int
   frame   Frame @relation(fields: [frameId], references: [id])
   frameId   Int
   image     String
-  input     String
-  button1   String
-  button2   String
-  button3   String
-  button4   String
+  input     String?
+  button1   String?
+  button2   String?
+  button3   String?
+  button4   String?
 }
 
 model Frame {
   id       Int     @id @default(autoincrement())
+  uid       String
   type      String
   name      String?
   itemsLength Int

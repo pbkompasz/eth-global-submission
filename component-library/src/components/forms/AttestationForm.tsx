@@ -1,9 +1,9 @@
 import { FormEvent, useEffect, useState } from "react";
-import React from "react"
+import React from "react";
 import { createAttestation, getSchema } from "../../eas";
 import { Field } from "../../types";
 import "./AttestationForm.scss";
-import { FormProps } from "./AttestationForm.types";
+import { FormProps, Group } from "./AttestationForm.types";
 import { SchemaRecord } from "@ethereum-attestation-service/eas-sdk";
 
 export const checkAttestationFieldsMatch = async (
@@ -14,6 +14,27 @@ export const checkAttestationFieldsMatch = async (
 interface input {
   [key: string]: any;
 }
+
+const createList = (
+  schema: SchemaRecord | undefined,
+  groups: Group[] | undefined
+) => {
+  if (!schema) return [];
+  const split = schema.schema.split(",");
+  const list: string[] = [];
+  if (!groups) return split;
+  groups.forEach((group) => {
+    group.fields.forEach((field: string) => {
+      const t = split.find((s) => s.includes(field));
+      if (t) {
+        list.push(t);
+        split;
+      }
+    });
+  });
+  const resp = split.filter((s) => !list.find((l) => l === s));
+  return [...list, ...resp];
+};
 
 const AttestationForm = (props: FormProps) => {
   const [schema, setSchema] = useState<SchemaRecord>();
@@ -40,10 +61,14 @@ const AttestationForm = (props: FormProps) => {
     const name = split[1];
     const textInputTypes = ["address", "string", "bytes", "int"];
     const checkboxTypes = ["bool"];
-    const label = <label className="form__fields__label" htmlFor={String(index)}>{name}</label>;
+    const label = (
+      <label className="form__fields__label" htmlFor={String(index)}>
+        {name}
+      </label>
+    );
     if (textInputTypes.find((type) => split[0].includes(type))) {
       return (
-        <div className="form__fields__input">
+        <div className="form__fields__input" id={split[1]}>
           {label}
           <input
             type="text"
@@ -55,7 +80,7 @@ const AttestationForm = (props: FormProps) => {
       );
     } else if (checkboxTypes.find((type) => split[0].includes(type))) {
       return (
-        <div className="form__fields__bool">
+        <div className="form__fields__bool" id={split[1]}>
           <input
             type="checkbox"
             id={String(index)}
@@ -129,9 +154,9 @@ const AttestationForm = (props: FormProps) => {
       >
         <h1 className="form__title">{props.title}</h1>
         <div className="form__fields">
-          {schema?.schema
-            .split(",")
-            .map((schemaString, index) => createInput(schemaString, index))}
+          {createList(schema, props.groups).map((schemaString, index) =>
+            createInput(schemaString, index)
+          )}
         </div>
         <input
           className="form__action"

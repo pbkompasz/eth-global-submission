@@ -1,6 +1,6 @@
 import { Signer, Provider } from "ethers";
 
-type Group = {
+export type Group = {
   className: string;
   fields: string[];
 };
